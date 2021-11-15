@@ -2,32 +2,18 @@ import numpy as np
 from numpy.core.numeric import _convolve_dispatcher
 from skimage import io
 import matplotlib.pyplot as plt
+from utils import plotimages
 
 
-train_image = np.array(io.imread("lena.jpg"), dtype=np.float32) / 255
+train_image = np.array(io.imread("bird_small.png"), dtype=np.float32) / 255
+show_orig= train_image.copy()
 # plt.imshow(train_image) #Show the train image for sanity check 
 # plt.show()
 
-width = train_image.shape[0]
-height = train_image.shape[1]
+height = train_image.shape[0]
+width = train_image.shape[1]
 channels = train_image.shape[2]
 train_image = train_image.reshape(-1, channels)
-
-
-# predictions= []
-
-# for i in range(channels):
-#     kmeans = KMeans(n_clusters=64, init= 'random', n_init= 10, max_iter= 10, random_state= 0).fit(train_image[:,i].reshape(-1,1))
-#     pred= kmeans.predict(train_image[:,i].reshape(-1,1))
-#     predictions.append(pred.reshape(width, height))
-
-
-# prediction = np.zeros((width, height, 3))*255
-
-# """Add the channels to the needed image one by one"""
-# prediction[:,:,0] = predictions[0]
-# prediction[:,:,1] = predictions[1]
-# prediction[:,:,2] = predictions[2]
 
 # kmeans from scratch=============================================
 max_iters = 8
@@ -60,6 +46,7 @@ for iter in range(max_iters):
             centroids[color] = Mean
     # print(f'centroids {iter+2} iter: {centroids}')    #Print the centroids after the updates for sanity check
 prediction = centroids[index, :]
-prediction = prediction.reshape(width, height, channels)
-plt.imshow(prediction)
-plt.show()
+prediction = prediction.reshape(height, width, channels)
+
+#Plot images side by side (compressed on the right)
+plotimages(train_image, prediction)
