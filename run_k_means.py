@@ -2,7 +2,7 @@ import numpy as np
 from numpy.core.numeric import _convolve_dispatcher
 from skimage import io
 import matplotlib.pyplot as plt
-from utils import plotimages
+import utils
 
 
 train_image = np.array(io.imread("bird_small.png"), dtype=np.float32) / 255
@@ -49,4 +49,6 @@ prediction = centroids[index, :]
 prediction = prediction.reshape(height, width, channels)
 
 #Plot images side by side (compressed on the right)
-plotimages(train_image, prediction)
+utils.plotimages(train_image, prediction)
+
+utils.piechart(values= np.ones((k,)), colors= centroids)
